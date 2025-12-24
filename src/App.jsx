@@ -1,39 +1,21 @@
-import { useState } from "react";
-import SearchBar from "./components/SearchBar";
-import DestinationList from "./components/DestinationList";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Home from "./pages/Home";
+import DestinationDetails from "./pages/DestinationDetails";
+import Itinerary from "./pages/Itinerary";
+import NavBar from "./components/NavBar";
 
 export default function App() {
-  const [query, setQuery] = useState("");
-
-  function handleSearch() {
-    const cleaned = query.trim();
-    if (!cleaned) return;
-    alert(`Searching for: ${cleaned}`);
-  }
-
   return (
-    <div className="min-h-screen bg-gradient-to-b from-indigo-600 to-purple-600 text-white">
-      <div className="max-w-5xl mx-auto px-6 py-16 sm:py-24">
-        {/* Header / Hero */}
-        <header className="text-center">
-          <h1 className="text-4xl sm:text-5xl font-extrabold mb-4">
-            My Vacay Planner
-          </h1>
+    <BrowserRouter>
+      <div className="min-h-screen bg-gradient-to-b from-indigo-600 to-purple-600 text-white">
+        <NavBar />
 
-          <p className="text-white/90 max-w-2xl mx-auto mb-10 leading-relaxed">
-            Plan your trips, explore destinations, and build your itinerary — stress free.
-          </p>
-
-          <SearchBar
-            value={query}
-            onChange={setQuery}
-            onSearch={handleSearch}
-          />
-        </header>
-
-        {/* Destinations */}
-        <DestinationList />
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/destination/:slug" element={<DestinationDetails />} />
+          <Route path="/itinerary" element={<Itinerary />} />
+        </Routes>
       </div>
-    </div>
+    </BrowserRouter>
   );
 }
