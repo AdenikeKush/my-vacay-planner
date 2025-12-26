@@ -1,61 +1,34 @@
-import { Link } from "react-router-dom";
+import React from "react";
 
-const SAMPLE_DESTINATIONS = [
-  {
-    id: 1,
-    city: "Tokyo",
-    country: "Japan",
-    vibe: "Neon city lights, culture & food",
-    tag: "City adventure",
-    color: "from-pink-500 to-rose-500",
-    slug: "tokyo",
-  },
-  {
-    id: 2,
-    city: "Doha",
-    country: "Qatar",
-    vibe: "Desert views & modern skyline",
-    tag: "Desert escape",
-    color: "from-amber-400 to-orange-500",
-    slug: "doha",
-  },
-  {
-    id: 3,
-    city: "Cairo",
-    country: "Egypt",
-    vibe: "Ancient history & Nile sunsets",
-    tag: "History & culture",
-    color: "from-emerald-500 to-teal-500",
-    slug: "cairo",
-  },
-];
+export default function DestinationList({ destinations = [], onSelect }) {
+  if (!destinations.length) return null;
 
-export default function DestinationList() {
   return (
-    <section className="mt-12 sm:mt-16">
-      <h2 className="text-2xl font-semibold mb-4 text-left text-white/95">
-        Popular picks
-      </h2>
+    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      {destinations.map((d) => (
+        <button
+          key={d.id}
+          onClick={() => onSelect?.(d)}
+          className="text-left rounded-2xl p-6 shadow-lg transition hover:scale-[1.01] focus:outline-none focus:ring-2 focus:ring-white/60"
+          style={{
+            background: d.gradient || "linear-gradient(135deg, #ff3d77, #ff7a00)",
+          }}
+        >
+          <div className="text-xs font-semibold tracking-widest uppercase text-white/80">
+            {d.tag || "POPULAR"}
+          </div>
 
-      <div className="grid gap-4 sm:grid-cols-3">
-        {SAMPLE_DESTINATIONS.map((dest) => (
-          <Link
-            key={dest.id}
-            to={`/destination/${dest.slug}`}
-            className={`rounded-2xl p-4 text-left text-white bg-gradient-to-br ${dest.color} shadow-lg hover:opacity-95 transition`}
-          >
-            <p className="text-xs uppercase tracking-wide text-white/80 mb-1">
-              {dest.tag}
-            </p>
+          <div className="mt-2 text-2xl font-extrabold text-white">
+            {d.city}
+          </div>
 
-            <h3 className="text-lg font-bold">{dest.city}</h3>
+          <div className="text-white/90">{d.country}</div>
 
-            <p className="text-sm text-white/90 mb-2">{dest.country}</p>
-
-            <p className="text-sm text-white/90">{dest.vibe}</p>
-          </Link>
-        ))}
-      </div>
-    </section>
+          {d.subtitle ? (
+            <div className="mt-3 text-sm text-white/90">{d.subtitle}</div>
+          ) : null}
+        </button>
+      ))}
+    </div>
   );
 }
