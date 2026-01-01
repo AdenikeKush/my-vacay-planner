@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
 import DestinationDetails from "./pages/DestinationDetails";
 import Itinerary from "./pages/Itinerary";
+import SavedTrips from "./pages/SavedTrips";
 import NavBar from "./components/NavBar";
 
 export default function App() {
@@ -14,6 +15,7 @@ export default function App() {
           <Route path="/" element={<Home />} />
           <Route path="/destination/:slug" element={<DestinationDetails />} />
           <Route path="/itinerary" element={<Itinerary />} />
+          <Route path="/saved" element={<SavedTrips />} />
         </Routes>
       </div>
     </BrowserRouter>

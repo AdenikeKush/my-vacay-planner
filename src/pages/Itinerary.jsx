@@ -1,29 +1,66 @@
-import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useSearchParams, Link } from "react-router-dom";
+import { getTripById } from "../utils/storage";
 
 export default function Itinerary() {
-  return (
-    <div className="min-h-screen">
-      <div className="max-w-5xl mx-auto px-6 py-12">
+  const [params] = useSearchParams();
+  const tripId = params.get("tripId");
+  const [trip, setTrip] = useState(null);
+
+  useEffect(() => {
+    if (tripId) setTrip(getTripById(tripId));
+  }, [tripId]);
+
+  if (!tripId) {
+    return (
+      <div className="mx-auto w-full max-w-5xl px-6 py-10">
+        <h1 className="text-3xl font-extrabold">Itinerary</h1>
+        <p className="mt-2 text-white/80">
+          No trip selected. Go to Home and click “Plan trip” on a destination.
+        </p>
         <Link
           to="/"
-          className="inline-flex items-center gap-2 text-white/90 hover:text-white"
+          className="mt-6 inline-block rounded-xl bg-white px-4 py-2 font-semibold text-indigo-700 hover:bg-white/90"
         >
-          ← Back to Home
+          Go to Home
         </Link>
+      </div>
+    );
+  }
 
-        <div className="mt-8 rounded-3xl bg-white/10 backdrop-blur border border-white/10 p-6 sm:p-10">
-          <h1 className="text-3xl sm:text-4xl font-extrabold">Your Itinerary</h1>
-          <p className="mt-2 text-white/80">
-            This page will store the destinations, flights, and hotels you add.
-            Next we’ll save items to localStorage so your itinerary stays after refresh.
-          </p>
+  if (!trip) {
+    return (
+      <div className="mx-auto w-full max-w-5xl px-6 py-10">
+        <h1 className="text-3xl font-extrabold">Itinerary</h1>
+        <p className="mt-2 text-white/80">Trip not found.</p>
+        <Link
+          to="/saved"
+          className="mt-6 inline-block rounded-xl bg-white px-4 py-2 font-semibold text-indigo-700 hover:bg-white/90"
+        >
+          View Saved Trips
+        </Link>
+      </div>
+    );
+  }
 
-          <div className="mt-6 rounded-2xl bg-white/10 border border-white/10 p-5">
-            <p className="text-white/80">
-              No items yet. Add a destination from the details page.
-            </p>
-          </div>
-        </div>
+  return (
+    <div className="mx-auto w-full max-w-5xl px-6 py-10">
+      <h1 className="text-3xl font-extrabold">Itinerary</h1>
+      <p className="mt-2 text-white/80">
+        Trip: <span className="font-semibold text-white">{trip.destinationName}</span>{" "}
+        {trip.countryCode ? `(${trip.countryCode})` : ""}
+      </p>
+
+      <div className="mt-8 rounded-2xl border border-white/20 bg-white/10 p-6 backdrop-blur">
+        <p className="text-white/80">
+          Itinerary builder is next. For now, this confirms that “Plan trip” creates a saved trip and opens it correctly.
+        </p>
+        <Link
+          to="/saved"
+          className="mt-5 inline-block rounded-xl bg-white px-4 py-2 font-semibold text-indigo-700 hover:bg-white/90"
+        >
+          View Saved Trips
+        </Link>
       </div>
     </div>
   );
